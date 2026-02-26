@@ -277,7 +277,7 @@ func resolveProviderSelection(cfg *config.Config) (providerSelection, error) {
 			if sel.apiBase == "" {
 				sel.apiBase = "https://integrate.api.nvidia.com/v1"
 			}
-		case (strings.Contains(lowerModel, "ollama") || strings.HasPrefix(model, "ollama/")) && cfg.Providers.Ollama.APIKey != "":
+		case strings.Contains(lowerModel, "ollama") || strings.HasPrefix(model, "ollama/"):
 			sel.apiKey = cfg.Providers.Ollama.APIKey
 			sel.apiBase = cfg.Providers.Ollama.APIBase
 			sel.proxy = cfg.Providers.Ollama.Proxy
@@ -311,7 +311,7 @@ func resolveProviderSelection(cfg *config.Config) (providerSelection, error) {
 	}
 
 	if sel.providerType == providerTypeHTTPCompat {
-		if sel.apiKey == "" && !strings.HasPrefix(model, "bedrock/") {
+		if sel.apiKey == "" && !strings.HasPrefix(model, "bedrock/") && !strings.Contains(strings.ToLower(model), "ollama") {
 			return providerSelection{}, fmt.Errorf("no API key configured for provider (model: %s)", model)
 		}
 		if sel.apiBase == "" {
