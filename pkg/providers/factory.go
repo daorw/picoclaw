@@ -172,6 +172,13 @@ func resolveProviderSelection(cfg *config.Config) (providerSelection, error) {
 					sel.model = "deepseek-chat"
 				}
 			}
+		case "ollama":
+			sel.apiKey = cfg.Providers.Ollama.APIKey
+			sel.apiBase = cfg.Providers.Ollama.APIBase
+			sel.proxy = cfg.Providers.Ollama.Proxy
+			if sel.apiBase == "" {
+				sel.apiBase = "http://localhost:11434/v1"
+			}
 		case "mistral":
 			if cfg.Providers.Mistral.APIKey != "" {
 				sel.apiKey = cfg.Providers.Mistral.APIKey
